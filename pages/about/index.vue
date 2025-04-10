@@ -45,7 +45,11 @@
         <h1 class="top-heading">PUBLICATIONS</h1>
         <div v-for="publication in publicationsList">
           <h4>{{ publication.year }}</h4>
-          <div v-html="publication.section.html"></div>
+          <div v-html="publication.pSection.html"></div>
+          <div v-if="publication.caSection">
+            <h3>Conference abstracts</h3>
+            <div v-html="publication.caSection.html"></div>
+          </div>
         </div>
         <div class="view-all">
           <nuxt-link to="about/publication">VIEW ALL PUBLICATIONS</nuxt-link>
@@ -75,7 +79,7 @@ export default {
       graphcmsQuery.multiContent($graphcms, "partners"),
       graphcmsQuery.topNews($graphcms, 3),
       graphcmsQuery.topEvents($graphcms, 5),
-      graphcmsQuery.publicationsItem($graphcms, 3),
+      graphcmsQuery.publicationsItem($graphcms, 1),
     ]);
     const projects = await Promise.all(
       projectInfo.values.title.map(async (title) => {

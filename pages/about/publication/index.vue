@@ -8,7 +8,11 @@
                     <tab-nav :tabs="tabs" :active-tab="activeTab" @tabClick="onTabClick($event)" />
                 </div>
                 <div class="publication-detail">
-                    <div v-html="publication.content.html"></div>
+                    <div v-html="publication.pContent.html"></div>
+                    <div v-if="publication.caContent">
+                        <h1>Conference abstracts</h1>
+                        <div v-html="publication.caContent.html"></div>
+                    </div>
                 </div>
             </div>
             <div class="back-to">
@@ -26,14 +30,15 @@ export default {
 
     async asyncData({ $graphcms }) {
         const publications = await graphcmsQuery.publicationsItem($graphcms);
-        let tabs = []
-        const years = publications.values.map(pub => tabs.push({ label: pub.year, name: pub.year }))
-        return { publicationsList: publications.values, tabs: tabs };
+        const years = publications.values.map((pub) => {
+            return { label: pub.year, name: pub.year }
+        })
+        return { publicationsList: publications.values, tabs: years };
     },
 
     data: () => {
         return {
-            pageTitle: 'Project',
+            pageTitle: 'Publication',
             breadcrumb: [
                 {
                     to: {

@@ -46,10 +46,16 @@ const publicationsItemQuery = gql`
     values: publicationsItems(first: $fetchCount, orderBy: year_DESC) {
       year
       title
-      section {
+      pSection {
         html
       }
-      content {
+      pContent {
+        html
+      }
+      caSection {
+        html
+      }
+      caContent {
         html
       }
     }
