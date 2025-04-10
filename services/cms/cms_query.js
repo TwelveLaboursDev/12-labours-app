@@ -278,6 +278,16 @@ const contactAreaQuery = gql`
   }
 `;
 
+const teamsItemsQuery = gql`
+  {
+    values: teamsItems {
+      name
+      category
+      profile
+    }
+  }
+`;
+
 module.exports = {
   titledContentQuery,
   multiContentQuery,
@@ -300,4 +310,5 @@ module.exports = {
   feedbackReasonQuery,
   contactReasonQuery,
   contactAreaQuery,
+  teamsItemsQuery
 };

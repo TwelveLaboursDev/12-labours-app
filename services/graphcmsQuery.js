@@ -21,6 +21,7 @@ import {
   feedbackReasonQuery,
   contactReasonQuery,
   contactAreaQuery,
+  teamsItemsQuery
 } from "./cms/cms_query.js";
 
 async function titledContent(graphcms, name) {
@@ -212,6 +213,13 @@ async function contactArea(graphcms) {
   return await graphcms.request(contactAreaQuery);
 }
 
+async function teamsItems(graphcms) {
+  if (!graphcms.url) {
+    return cms_content.teamsItems;
+  }
+  return await graphcms.request(teamsItemsQuery);
+}
+
 export default {
   titledContent,
   multiContent,
@@ -233,5 +241,6 @@ export default {
   feedbackReason,
   contactReason,
   contactArea,
-  publicationsItem
+  publicationsItem,
+  teamsItems
 };
