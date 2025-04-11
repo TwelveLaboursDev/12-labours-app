@@ -56,6 +56,17 @@
         </div>
       </div>
     </div>
+    <!-- About 12 Labours -->
+    <div class="vertical-flex">
+      <h1 class="top-heading">{{ meetOurTeam.title.toUpperCase() }}</h1>
+      <div class="team-section">
+        <img :src="banner.image.url" alt="banner.title"/>
+        <div v-html="meetOurTeam.content.html" />
+      </div>
+      <div class="view-all">
+        <nuxt-link to="about/team">VIEW ALL MEMBERS</nuxt-link>
+      </div>
+    </div>
     <!-- <latest-news :newsList="topNews.newsList"/> -->
     <!-- <latest-events :eventsList="topEvents.eventsList"/> -->
     <!-- PARTNERSHIPS section -->
@@ -72,7 +83,9 @@ export default {
   name: "AboutPage",
 
   async asyncData({ $graphcms }) {
-    const [aboutLong, projectAims, projectInfo, partners, topNews, topEvents, publications] = await Promise.all([
+    const [meetOurTeam, banner, aboutLong, projectAims, projectInfo, partners, topNews, topEvents, publications] = await Promise.all([
+      graphcmsQuery.titledContent($graphcms, "meet_our_team"),
+      graphcmsQuery.banner($graphcms, "abi"),
       graphcmsQuery.titledContent($graphcms, "about_long"),
       graphcmsQuery.multiContent($graphcms, "project_aims"),
       graphcmsQuery.projectInfo($graphcms, "project_info"),
@@ -88,6 +101,8 @@ export default {
       })
     );
     return {
+      meetOurTeam: meetOurTeam.values,
+      banner: banner.values,
       aboutLong: aboutLong.values,
       projectAims: projectAims.values,
       projects,
@@ -172,6 +187,18 @@ export default {
 
   a {
     font-weight: 600;
+  }
+}
+
+.team-section {
+  display: flex;
+  justify-content: flex-start;
+
+  img {
+    width: 50%;
+    height: 420px;
+    margin-top: 1rem;
+    margin-right: 6rem;
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="page-outer">
-        <breadcrumb-trail :breadcrumb="breadcrumb" title="publications" />
+        <breadcrumb-trail :breadcrumb="breadcrumb" :title="pageTitle" />
         <div class="detail-container">
             <div class="vertical-flex">
                 <div class="publication-title">
