@@ -278,9 +278,9 @@ const contactAreaQuery = gql`
   }
 `;
 
-const teamsItemsQuery = gql`
+const teamsMembersQuery = gql`
   {
-    values: teamsItems {
+    values: teamsMembers {
       name
       category
       profile
@@ -310,5 +310,5 @@ module.exports = {
   feedbackReasonQuery,
   contactReasonQuery,
   contactAreaQuery,
-  teamsItemsQuery
+  teamsMembersQuery
 };

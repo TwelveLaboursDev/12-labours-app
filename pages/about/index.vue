@@ -56,15 +56,17 @@
         </div>
       </div>
     </div>
-    <!-- About 12 Labours -->
-    <div class="vertical-flex">
-      <h1 class="top-heading">{{ meetOurTeam.title.toUpperCase() }}</h1>
-      <div class="team-section">
-        <img :src="banner.image.url" alt="banner.title"/>
-        <div v-html="meetOurTeam.content.html" />
-      </div>
-      <div class="view-all">
-        <nuxt-link to="about/team">VIEW ALL MEMBERS</nuxt-link>
+    <!-- About 12 Labours team -->
+    <div class="container-default">
+      <div class="vertical-flex">
+        <h1 class="top-heading">{{ meetOurTeam.title.toUpperCase() }}</h1>
+        <div class="team-section">
+          <img :src="banner.image.url" alt="banner.title"/>
+          <div v-html="meetOurTeam.content.html" />
+        </div>
+        <div class="view-all">
+          <nuxt-link to="about/team">VIEW ALL MEMBERS</nuxt-link>
+        </div>
       </div>
     </div>
     <!-- <latest-news :newsList="topNews.newsList"/> -->

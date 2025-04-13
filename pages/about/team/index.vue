@@ -39,15 +39,15 @@ export default {
     name: "TeamPage",
 
     async asyncData({ $graphcms }) {
-        const teamsItems = await graphcmsQuery.teamsItems($graphcms);
-        const teamsEntry = teamsItems.values.map((item) => {
+        const teamsMembers = await graphcmsQuery.teamsMembers($graphcms);
+        const teamsEntry = teamsMembers.values.map((item) => {
             return {
                 ...item,
                 imageUrl: `${item.profile}/thumbnail`,
             }
         });
         return {
-            teamsItems: teamsEntry,
+            teamsMembers: teamsEntry,
         };
     },
 
@@ -74,28 +74,28 @@ export default {
 
     computed: {
         principalInvestigator() {
-            return this.teamsItems.filter((item) => {
+            return this.teamsMembers.filter((item) => {
                 return item.category === "principalInvestigator";
             });
         },
         associateInvestigator() {
-            return this.teamsItems.filter((item) => {
+            return this.teamsMembers.filter((item) => {
                 return item.category === "associateInvestigator"
             }
             );
         },
         researcher() {
-            return this.teamsItems.filter((item) => {
+            return this.teamsMembers.filter((item) => {
                 return item.category === "researcher"
             });
         },
         projectManager() {
-            return this.teamsItems.filter((item) => {
+            return this.teamsMembers.filter((item) => {
                 return item.category === "projectManager"
             });
         },
         specialThanks() {
-            return this.teamsItems.filter((item) => {
+            return this.teamsMembers.filter((item) => {
                 return item.category === "specialThanks"
             });
         },

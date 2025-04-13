@@ -22,6 +22,7 @@ const {
   feedbackReasonQuery,
   contactReasonQuery,
   contactAreaQuery,
+  teamsMembersQuery
 } = require("./cms_query.js");
 
 const withNameVariable = {
@@ -53,6 +54,7 @@ const withoutVariable = {
   feedbackReason: feedbackReasonQuery,
   contactReason: contactReasonQuery,
   contactArea: contactAreaQuery,
+  teamsMembers: teamsMembersQuery,
 };
 
 module.exports.cms_backup = async function () {
