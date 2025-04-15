@@ -1,23 +1,21 @@
 <template>
-  <div class="tools-item-container">
-    <div class="tools-item">
-      <div class="tools-item__image">
-        <img :src="toolsItem.image.url"></img>
+  <div class="item-row-container">
+    <div class="item-row">
+      <div class="item-row__image">
+        <img :src="item.image.url" />
       </div>
-      <div class="tools-item__info vertical-flex">
-        <div class="item-title display-ellipsis --2">
-          <nuxt-link :to="{ name: 'resources-tools-detail', params: { detail: toolsItem.slug } }">
-            <h4>{{ toolsItem.title }}</h4>
+      <div class="item-row__info vertical-flex">
+        <div class="item-row-title display-ellipsis --2">
+          <nuxt-link :to="{
+            name: `${readMoreLink}-detail`,
+            params: { detail: item.slug },
+          }">
+            <h4>{{ item.title }}</h4>
           </nuxt-link>
         </div>
-        <div class="item-date">
-          <!-- <span>
-            {{this.$formatDDMonthYear(toolsItem.publishedDate)}}
-          </span> -->
-        </div>
-        <div class="item-detail">
+        <div class="item-row-content">
           <span>
-            {{ toolsItem.blurb }}
+            {{ item.detail }}
           </span>
         </div>
       </div>
@@ -26,25 +24,28 @@
 </template>
 
 <script>
-
 export default {
-  name: 'ToolsItem',
+  name: "ItemRow",
 
   props: {
-    toolsItem: {
-      default: () => { }
+    item: {
+      type: Object,
+      default: {},
+    },
+    readMoreLink: {
+      type: String,
+      default: "",
     }
-  }
-}
+  },
+};
 </script>
 
-
 <style scoped lang="scss">
-.tools-item-container {
+.item-row-container {
   display: flex;
 }
 
-.tools-item {
+.item-row {
   display: flex;
   column-gap: 1.5rem;
 
@@ -69,13 +70,13 @@ export default {
   }
 
   &__info {
-    .item-title {
+    .item-row-title {
       a {
         text-decoration: none !important;
       }
     }
 
-    .item-date {
+    .item-row-date {
       padding-top: 0.38rem;
       padding-bottom: 0.75rem;
 
@@ -85,7 +86,7 @@ export default {
       }
     }
 
-    .item-detail {
+    .item-row-content {
       text-align: justify;
       background-color: $cochlear;
     }

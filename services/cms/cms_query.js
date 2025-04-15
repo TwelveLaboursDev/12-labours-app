@@ -1,6 +1,6 @@
 const { gql } = require("graphql-request");
 
-const contentQuery = gql`
+const titledContentQuery = gql`
   query($name: String!) {
     values: titledContent(where: { name: $name }) {
       content {
@@ -22,15 +22,10 @@ const multiContentQuery = gql`
   }
 `;
 
-const projectInformationQuery = gql`
+const projectInfoQuery = gql`
   query($name: String!) {
-    values: projectInformation(where: { name: $name }) {
-      content {
-        html
-      }
+    values: projectInfo(where: { name: $name }) {
       title
-      linkCaption
-      link
     }
   }
 `;
@@ -42,6 +37,41 @@ const bannerQuery = gql`
         url
       }
       title
+    }
+  }
+`;
+
+const publicationsItemQuery = gql`
+  query ($fetchCount: Int) {
+    values: publicationsItems(first: $fetchCount, orderBy: year_DESC) {
+      year
+      title
+      pSection {
+        html
+      }
+      pContent {
+        html
+      }
+      caSection {
+        html
+      }
+      caContent {
+        html
+      }
+    }
+  }
+`;
+
+const projectItemQuery = gql`
+  query($name: String!) {
+    projectItem: projectsItem(where: { name: $name }) {
+      content {
+        html
+      }
+      title
+      linkCaption
+      link
+      blurb
     }
   }
 `;
@@ -142,13 +172,14 @@ const topToolsQuery = gql`
       category
       blurb
       slug
+      link
     }
   }
 `;
 
-const toolsQuery = gql`
+const toolQuery = gql`
   query($slug: String!) {
-    toolsItem: toolsItems(where: { slug: $slug }) {
+    toolItem: toolsItems(where: { slug: $slug }) {
       publishedDate
       title
       image {
@@ -158,6 +189,7 @@ const toolsQuery = gql`
       detail {
         html
       }
+      link
     }
   }
 `;
@@ -165,6 +197,50 @@ const toolsQuery = gql`
 const toolsCategoryQuery = gql`
   query introspectToolsCategoryType {
     __type(name: "ToolsCategory") {
+      enumValues {
+        name
+      }
+    }
+  }
+`;
+
+const topResourcesQuery = gql`
+  query($fetchCount: Int) {
+    resourcesList: resourcesItems(first: $fetchCount) {
+      slug
+      title
+      blurb
+      detail {
+        html
+      }
+      link
+      image {
+        url
+      }
+      category
+    }
+  }
+`;
+
+const resourceQuery = gql`
+  query($slug: String!) {
+    resourceItem: resourcesItems(where: { slug: $slug }) {
+      title
+      blurb
+      detail {
+        html
+      }
+      link
+      image {
+        url
+      }
+    }
+  }
+`;
+
+const resourcesCategoryQuery = gql`
+  query introspectContactAreaType {
+    __type(name: "ResourcesCategory") {
       enumValues {
         name
       }
@@ -202,11 +278,23 @@ const contactAreaQuery = gql`
   }
 `;
 
+const teamsMembersQuery = gql`
+  {
+    values: teamsMembers {
+      name
+      category
+      profile
+    }
+  }
+`;
+
 module.exports = {
-  contentQuery,
+  titledContentQuery,
   multiContentQuery,
-  projectInformationQuery,
+  projectInfoQuery,
+  projectItemQuery,
   bannerQuery,
+  publicationsItemQuery,
   topNewsQuery,
   newsQuery,
   newsCategoryQuery,
@@ -214,9 +302,13 @@ module.exports = {
   eventQuery,
   eventsCategoryQuery,
   topToolsQuery,
-  toolsQuery,
+  toolQuery,
   toolsCategoryQuery,
+  topResourcesQuery,
+  resourceQuery,
+  resourcesCategoryQuery,
   feedbackReasonQuery,
   contactReasonQuery,
   contactAreaQuery,
+  teamsMembersQuery
 };

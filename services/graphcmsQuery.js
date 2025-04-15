@@ -1,9 +1,11 @@
 import cms_content from "./cms/cms_content.json";
 import {
-  contentQuery,
+  titledContentQuery,
   multiContentQuery,
-  projectInformationQuery,
+  projectInfoQuery,
+  projectItemQuery,
   bannerQuery,
+  publicationsItemQuery,
   topNewsQuery,
   newsQuery,
   newsCategoryQuery,
@@ -11,21 +13,25 @@ import {
   eventQuery,
   eventsCategoryQuery,
   topToolsQuery,
-  toolsQuery,
+  toolQuery,
   toolsCategoryQuery,
+  resourceQuery,
+  topResourcesQuery,
+  resourcesCategoryQuery,
   feedbackReasonQuery,
   contactReasonQuery,
   contactAreaQuery,
+  teamsMembersQuery
 } from "./cms/cms_query.js";
 
-async function content(graphcms, name) {
+async function titledContent(graphcms, name) {
   if (!graphcms.url) {
     return cms_content.content[name];
   }
   const variable = {
     name: name,
   };
-  return await graphcms.request(contentQuery, variable);
+  return await graphcms.request(titledContentQuery, variable);
 }
 
 async function multiContent(graphcms, name) {
@@ -38,14 +44,24 @@ async function multiContent(graphcms, name) {
   return await graphcms.request(multiContentQuery, variable);
 }
 
-async function projectInformation(graphcms, name) {
+async function projectInfo(graphcms, name) {
   if (!graphcms.url) {
-    return cms_content.projectInformation[name];
+    return cms_content.projectInfo[name];
   }
   const variable = {
     name: name,
   };
-  return await graphcms.request(projectInformationQuery, variable);
+  return await graphcms.request(projectInfoQuery, variable);
+}
+
+async function projectItem(graphcms, name) {
+  if (!graphcms.url) {
+    return cms_content.projectItem[name];
+  }
+  const variable = {
+    name: name,
+  };
+  return await graphcms.request(projectItemQuery, variable);
 }
 
 async function banner(graphcms, name) {
@@ -56,6 +72,16 @@ async function banner(graphcms, name) {
     name: name,
   };
   return await graphcms.request(bannerQuery, variable);
+}
+
+async function publicationsItem(graphcms, fetchCount) {
+  if (!graphcms.url) {
+    return cms_content.publicationsItem;
+  }
+  const variable = {
+    fetchCount: fetchCount,
+  };
+  return await graphcms.request(publicationsItemQuery, variable);
 }
 
 async function topNews(graphcms, fetchCount) {
@@ -122,14 +148,14 @@ async function topTools(graphcms, fetchCount) {
   return await graphcms.request(topToolsQuery, variable);
 }
 
-async function tools(graphcms, slug) {
+async function tool(graphcms, slug) {
   if (!graphcms.url) {
-    return cms_content.tools[slug];
+    return cms_content.tool[slug];
   }
   const variable = {
     slug: slug,
   };
-  return await graphcms.request(toolsQuery, variable);
+  return await graphcms.request(toolQuery, variable);
 }
 
 async function toolsCategory(graphcms) {
@@ -137,6 +163,33 @@ async function toolsCategory(graphcms) {
     return cms_content.toolsCategory;
   }
   return await graphcms.request(toolsCategoryQuery);
+}
+
+async function topResources(graphcms, fetchCount) {
+  if (!graphcms.url) {
+    return cms_content.topResources;
+  }
+  const variable = {
+    fetchCount: fetchCount,
+  };
+  return await graphcms.request(topResourcesQuery, variable);
+}
+
+async function resource(graphcms, slug) {
+  if (!graphcms.url) {
+    return cms_content.resource[slug];
+  }
+  const variable = {
+    slug: slug,
+  };
+  return await graphcms.request(resourceQuery, variable);
+}
+
+async function resourcesCategory(graphcms) {
+  if (!graphcms.url) {
+    return cms_content.resourcesCategory;
+  }
+  return await graphcms.request(resourcesCategoryQuery);
 }
 
 async function feedbackReason(graphcms) {
@@ -160,10 +213,18 @@ async function contactArea(graphcms) {
   return await graphcms.request(contactAreaQuery);
 }
 
+async function teamsMembers(graphcms) {
+  if (!graphcms.url) {
+    return cms_content.teamsMembers;
+  }
+  return await graphcms.request(teamsMembersQuery);
+}
+
 export default {
-  content,
+  titledContent,
   multiContent,
-  projectInformation,
+  projectInfo,
+  projectItem,
   topNews,
   news,
   newsCategory,
@@ -171,10 +232,15 @@ export default {
   event,
   eventsCategory,
   topTools,
-  tools,
+  tool,
   toolsCategory,
+  topResources,
+  resource,
+  resourcesCategory,
   banner,
   feedbackReason,
   contactReason,
   contactArea,
+  publicationsItem,
+  teamsMembers
 };

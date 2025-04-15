@@ -7,7 +7,7 @@
         </span>
       </div>
     </div>
-    <portal-help />
+    <!-- <portal-help /> -->
     <div class="container-default shaded">
       <div class="top-heading">
         <h1>{{ content.values.title }}</h1>
@@ -15,7 +15,7 @@
       <div class="default-inner">
         <div v-html="content.values.content.html" />
         <div class="nav-about">
-          <!-- <nuxt-link to="/about/">
+          <!-- <nuxt-link to="/about">
             FIND OUT MORE ABOUT THE 12 LABOURS PROJECT
           </nuxt-link> -->
         </div>
@@ -33,7 +33,7 @@ export default {
   name: "App",
 
   async asyncData({ $graphcms }) {
-    const content = await graphcmsQuery.content($graphcms, "about");
+    const content = await graphcmsQuery.titledContent($graphcms, "about");
     const topNews = await graphcmsQuery.topNews($graphcms, 3);
     return { content, topNews };
   },

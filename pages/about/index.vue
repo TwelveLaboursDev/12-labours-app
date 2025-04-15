@@ -5,19 +5,19 @@
     <div class="about container-default shaded flex-box">
       <div class="vertical-flex">
         <h1 class="top-heading">
-          {{about.title.toUpperCase() }}
+          {{ aboutLong.title.toUpperCase() }}
         </h1>
-        <div v-html="about.content.html"/>
+        <div v-html="aboutLong.content.html" />
       </div>
     </div>
     <!-- Project Aims & Information -->
     <div class="project container-default">
       <div>
         <h1 class="top-heading">
-          {{projectAims.title.toUpperCase()}}
+          {{ projectAims.title.toUpperCase() }}
         </h1>
-        <div class="flex-box"  v-for="(content,index) in projectAims.contents" :key="index">
-          <div class="num vertical-flex">{{ index+1 }}</div> 
+        <div class="flex-box" v-for="(content, index) in projectAims.contents" :key="index">
+          <div class="num vertical-flex">{{ index + 1 }}</div>
           <div v-html="content.html"></div>
         </div>
       </div>
@@ -25,13 +25,14 @@
         <h1 class="top-heading">
           PROJECT INFORMATION
         </h1>
-      <el-collapse>
-          <el-collapse-item  v-for="(item,index) in projectInfo"  :key="index" :title="item.title[0].toUpperCase()" :name="index">
-            <div v-html="item.content[0].html"></div>
+        <el-collapse accordion>
+          <el-collapse-item v-for="(item, index) in projects" :key="index" :title="item.title[0].toUpperCase()"
+            :name="index">
+            <div>{{ item.blurb[0] }}</div>
             <div class="nav-button" v-if="item.linkCaption.length">
               <nuxt-link v-if="item.link.length" :to="item.link[0]">
                 <el-button>
-                  {{item.linkCaption[0]}}
+                  {{ item.linkCaption[0] }}
                 </el-button>
               </nuxt-link>
             </div>
@@ -39,111 +40,167 @@
         </el-collapse>
       </div>
     </div>
+    <div class="container-default shaded flex-box">
+      <div class="vertical-flex">
+        <h1 class="top-heading">PUBLICATIONS</h1>
+        <div v-for="publication in publicationsList">
+          <h4>{{ publication.year }}</h4>
+          <div v-html="publication.pSection.html"></div>
+          <div v-if="publication.caSection">
+            <h3>Conference abstracts</h3>
+            <div v-html="publication.caSection.html"></div>
+          </div>
+        </div>
+        <div class="view-all">
+          <nuxt-link to="about/publication">VIEW ALL PUBLICATIONS</nuxt-link>
+        </div>
+      </div>
+    </div>
+    <!-- About 12 Labours team -->
+    <div class="container-default">
+      <div class="vertical-flex">
+        <h1 class="top-heading">{{ meetOurTeam.title.toUpperCase() }}</h1>
+        <div class="team-section">
+          <img :src="banner.image.url" alt="banner.title"/>
+          <div v-html="meetOurTeam.content.html" />
+        </div>
+        <div class="view-all">
+          <nuxt-link to="about/team">VIEW ALL MEMBERS</nuxt-link>
+        </div>
+      </div>
+    </div>
     <!-- <latest-news :newsList="topNews.newsList"/> -->
-    <latest-events :eventsList="topEvents.eventsList"/>
-    <!-- Partners -->
+    <!-- <latest-events :eventsList="topEvents.eventsList"/> -->
+    <!-- PARTNERSHIPS section -->
     <section-with-image :title="partners.title">
-      <div v-for="(item,index) in partners.contents" :key="index" v-html="item.html"/>
+      <div v-for="(item, index) in partners.contents" :key="index" v-html="item.html" />
     </section-with-image>
   </div>
 </template>
 
 <script>
-import graphcmsQuery from '@/services/graphcmsQuery'
+import graphcmsQuery from "@/services/graphcmsQuery";
 
 export default {
-  name: 'AboutPage',
+  name: "AboutPage",
 
-  async asyncData({$graphcms}) {
-    const [dataAbout, dataAims, dataInfo, dataPartners,topNews,topEvents] = await Promise.all([ 
-      graphcmsQuery.content($graphcms, 'about_long'),
-      graphcmsQuery.multiContent($graphcms, 'project_aims'),
-      graphcmsQuery.projectInformation($graphcms, 'project-info'),
-      graphcmsQuery.multiContent($graphcms, 'partners'),
+  async asyncData({ $graphcms }) {
+    const [meetOurTeam, banner, aboutLong, projectAims, projectInfo, partners, topNews, topEvents, publications] = await Promise.all([
+      graphcmsQuery.titledContent($graphcms, "meet_our_team"),
+      graphcmsQuery.banner($graphcms, "abi"),
+      graphcmsQuery.titledContent($graphcms, "about_long"),
+      graphcmsQuery.multiContent($graphcms, "project_aims"),
+      graphcmsQuery.projectInfo($graphcms, "project_info"),
+      graphcmsQuery.multiContent($graphcms, "partners"),
       graphcmsQuery.topNews($graphcms, 3),
-      graphcmsQuery.topEvents($graphcms, 5)
+      graphcmsQuery.topEvents($graphcms, 5),
+      graphcmsQuery.publicationsItem($graphcms, 1),
     ]);
     const projects = await Promise.all(
-      dataInfo.values.title.map(async (title) => {
-        const project = await graphcmsQuery.projectInformation($graphcms, title)
-        return project.values
+      projectInfo.values.title.map(async (title) => {
+        const project = await graphcmsQuery.projectItem($graphcms, title);
+        return project.projectItem;
       })
-    )
+    );
     return {
-      about: dataAbout.values,
-      projectAims: dataAims.values,   
-      projectInfo: projects,
-      partners: dataPartners.values,
+      meetOurTeam: meetOurTeam.values,
+      banner: banner.values,
+      aboutLong: aboutLong.values,
+      projectAims: projectAims.values,
+      projects,
+      partners: partners.values,
       topNews,
-      topEvents
+      topEvents,
+      publicationsList: publications.values,
     };
-    
   },
 
   data: () => {
     return {
-      pageTitle: 'About',
+      pageTitle: "About",
       breadcrumb: [
         {
           to: {
-            name: 'index'
+            name: "index",
           },
-          label: 'Home'
-        }
-      ]
-    }
-  }
-}
+          label: "Home",
+        },
+      ],
+    };
+  },
+};
 </script>
 
 <style scoped lang="scss">
+.about {
+  @media only screen and (max-width: $viewport-md) {
+    flex-direction: column;
+    row-gap: 2rem;
+  }
+}
 
-  .about{
-    @media only screen and (max-width: $viewport-md){    
-      flex-direction:column;
-      row-gap:2rem;
+.tohu-image {
+  padding: 0.06rem 6rem;
+  justify-content: center;
+
+  img {
+    display: block;
+    height: 28.75rem;
+    width: 15rem;
+
+    @media only screen and (max-width: $viewport-md) {
+      height: 14rem;
+      width: 7.5rem;
     }
   }
+}
 
-  .tohu-image{
-    padding:0.06rem 6rem;
-    justify-content:center;
-    img{
-      display:block;
-      height:28.75rem;
-      width:15rem;
-      @media only screen and (max-width: $viewport-md){    
-        height:14rem;
-        width:7.5rem;
-      }
+.project {
+  &__item {
+    width: 50%;
+  }
+
+  @media only screen and (max-width: $viewport-sm) {
+    flex-direction: column;
+    row-gap: 2rem;
+
+    &__item {
+      width: 100%;
     }
   }
+}
 
-  .project{
-    &__item{
-      width:50%;
-    }
-    
-    @media only screen and (max-width: $viewport-sm){    
-      flex-direction:column;
-      row-gap:2rem;
-      &__item{
-        width:100%;
-      }
-    }
+.num {
+  color: $mildBlue;
+  font-size: 9.38rem;
+  line-height: 6.88rem;
+  opacity: 0.1;
+  padding-bottom: 2.5rem;
+}
+
+.nav-button {
+  padding-left: 0.75rem;
+  padding-top: 1rem;
+}
+
+.view-all {
+  padding-top: 2.38rem;
+  text-align: center;
+
+  a {
+    font-weight: 600;
   }
+}
 
-  .num{
-    color:$mildBlue;
-    font-size:9.38rem;
-    line-height:6.88rem;
-    opacity: 0.1;
-    padding-bottom:2.5rem;
+.team-section {
+  display: flex;
+  justify-content: flex-start;
+
+  img {
+    width: 50%;
+    height: 420px;
+    margin-top: 1rem;
+    margin-right: 6rem;
   }
-
-  .nav-button{
-    padding-left:0.75rem;
-    padding-top:1rem;
-  }
-
+}
 </style>

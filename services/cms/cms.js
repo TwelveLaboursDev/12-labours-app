@@ -4,10 +4,12 @@ const fs = require("fs");
 
 const cms_template = require("./cms_template.json");
 const {
-  contentQuery,
+  titledContentQuery,
   multiContentQuery,
-  projectInformationQuery,
+  projectInfoQuery,
+  projectItemQuery,
   bannerQuery,
+  publicationsItemQuery,
   topNewsQuery,
   newsQuery,
   newsCategoryQuery,
@@ -20,19 +22,22 @@ const {
   feedbackReasonQuery,
   contactReasonQuery,
   contactAreaQuery,
+  teamsMembersQuery
 } = require("./cms_query.js");
 
 const withNameVariable = {
-  content: contentQuery,
+  titledContent: titledContentQuery,
   multiContent: multiContentQuery,
-  projectInformation: projectInformationQuery,
-  banner: bannerQuery,
+  projectInfo: projectInfoQuery,
+  projectItem: projectItemQuery,
+  banner: bannerQuery
 };
 
 const withCountVariable = {
   topNews: { query: topNewsQuery, count: 3 },
   topEvents: { query: topEventsQuery, count: 5 },
   topTools: { query: topToolsQuery, count: 3 },
+  publicationsItem: { query: publicationsItemQuery }
 };
 
 const withSlugVariable = {
@@ -49,9 +54,10 @@ const withoutVariable = {
   feedbackReason: feedbackReasonQuery,
   contactReason: contactReasonQuery,
   contactArea: contactAreaQuery,
+  teamsMembers: teamsMembersQuery,
 };
 
-module.exports.cms_backup = async function() {
+module.exports.cms_backup = async function () {
   cms_client = new GraphQLClient(process.env.GRAPHCMS_ENDPOINT);
 
   cms_types = Object.keys(cms_template);
@@ -60,7 +66,10 @@ module.exports.cms_backup = async function() {
 
     if (type in withNameVariable) {
       query = withNameVariable[type];
-      const names = Object.keys(cms_template[type]);
+      let names = Object.keys(cms_template[type]);
+      if (type === 'projectItem') {
+        names = cms_template["projectInfo"]['project_info']['values']['title'];
+      }
       for (let i = 0; i < names.length; i++) {
         const name = names[i];
         variable = {
@@ -109,7 +118,7 @@ module.exports.cms_backup = async function() {
     "./services/cms/cms_content.json",
     JSON.stringify(cms_template, null, 4),
     "utf8",
-    function(err) {
+    function (err) {
       if (err) {
         throw err;
       }
