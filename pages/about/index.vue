@@ -194,13 +194,12 @@ export default {
 
 .team-section {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-evenly;
+  align-items: center;
 
   img {
-    width: 50%;
-    height: 420px;
-    margin-top: 1rem;
-    margin-right: 6rem;
+    border-radius: 50%;
+    width: 15rem;
   }
 }
 </style>
