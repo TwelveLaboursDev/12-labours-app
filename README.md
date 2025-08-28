@@ -1,5 +1,24 @@
 # 12-labours-app
 
+# Notes
+
+This branch is a **refined version of the 12 Labourers Portal**, primarily used to display content from **Hygraph**.
+
+## Key Differences
+- The **Data Browser** page has been removed.
+- Content for the **Resources** and **About** pages has been updated.
+
+## Running the Portal
+Running this refined portal is similar to the previous version.  
+Since the **Data Browser** page has been removed, **backend-related dependencies are no longer required**.
+
+## Managing Content
+- A **Hygraph account** is required to manage content.
+- This version is deployed on **GitHub Pages** and is **static**.
+- To update the displayed content, **manually trigger the GitHub Actions workflow**.
+- It is recommended to **test changes locally** before deploying.
+
+
 ## Environment variables
 
 Here is the list of environment variables used by the app. After cloning the repository, please create a file named `.env` in the root directory and paste the variables.
@@ -107,3 +126,4 @@ More information about the usage of this directory in [the documentation](https:
 This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+
